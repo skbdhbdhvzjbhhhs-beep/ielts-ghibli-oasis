@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IELTS Ghibli Study Oasis - Ultimate Grand Master 🌳</title>
+    <style>
+        :root {
+            --ghibli-bg-image: url('https://images.unsplash.com/photo-1518156677180-95a2893f3e9f?q=80&w=1920&auto=format&fit=crop'); 
+            --ghibli-overlay: rgba(244, 247, 244, 0.88);
+            --ghibli-forest: #2d5a27;
+            --ghibli-leaf: #557c55;
+            --ghibli-sky: #a3c7d6;
+            --ghibli-clay: #d9a05b;
+            --ghibli-cream: #fefcf3;
+            --text-main: #2c3e50;
+            --text-muted: #7f8c8d;
+            --card-bg: rgba(255, 255, 255, 0.94);
+            --gold: #f39c12;
+            --border: #e2e8f0;
+        }
+
+        [data-theme="dark"] {
+            --ghibli-bg-image: url('https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?q=80&w=1920&auto=format&fit=crop'); 
+            --ghibli-overlay: rgba(22, 31, 23, 0.90);
+            --ghibli-forest: #729b6f;
+            --ghibli-leaf: #4f774f;
+            --ghibli-sky: #2c3e50;
+            --ghibli-clay: #b87d3b;
+            --ghibli-cream: #1e2920;
+            --text-main: #ecf0f1;
+            --text-muted: #bdc3c7;
+            --card-bg: rgba(35, 46, 37, 0.94);
+            --border: #2d382f;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-image: var(--ghibli-bg-image);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+            color: var(--text-main);
+            transition: background 0.5s ease, color 0.3s ease;
+        }
+
+        .body-overlay {
+            background: var(--ghibli-overlay);
+            min-height: 100vh;
+            padding: 25px;
+            box-sizing: border-box;
+            transition: background 0.5s ease;
+        }
+
+        .container { max-width: 1440px; margin: 0 auto; }
+
+        .welcome-banner {
+            background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url('https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1400&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            border-radius: 20px;
+            padding: 45px 20px;
+            text-align: center;
+            color: white;
+            margin-bottom: 25px;
+            border: 3px solid var(--ghibli-clay);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+        }
+        .welcome-banner h1 { margin: 0 0 12px 0; font-size: 2.8rem; font-family: 'Georgia', serif; letter-spacing: 1px; }
+        .welcome-banner p { margin: 0; font-size: 1.25rem; font-style: italic; opacity: 0.95; }
+
+        .game-header {
+            background: linear-gradient(135deg, var(--ghibli-forest), var(--ghibli-leaf));
+            border: 3px solid var(--ghibli-clay);
+            border-radius: 20px;
+            padding: 22px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            color: #ffffff;
+            box-shadow: 0 8px 25px rgba(45, 90, 39, 0.2);
+        }
+
+        .player-status { display: flex; align-items: center; gap: 15px; }
+        .avatar { width: 65px; height: 65px; background: var(--ghibli-clay); border-radius: 50%; border: 3px solid #fff; display: flex; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+        .stat-bar { background: rgba(0,0,0,0.3); width: 180px; height: 14px; border-radius: 7px; overflow: hidden; margin-top: 5px; border: 1px solid rgba(255,255,255,0.2); }
+        .stat-fill { height: 100%; transition: width 0.4s ease; }
+
+        .phase-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        @media (max-width: 768px) { .phase-grid { grid-template-columns: 1fr; } }
+        
+        .phase-card {
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            padding: 15px;
+            border-radius: 14px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        .phase-card.active {
+            border-color: var(--ghibli-clay);
+            background: var(--ghibli-cream);
+            box-shadow: 0 6px 18px rgba(217, 160, 91, 0.25);
+            color: var(--ghibli-forest);
+            transform: translateY(-2px);
+        }
+
+        .game-layout {
+            display: grid;
+            grid-template-columns: 2.2fr 1fr;
+            gap: 25px;
+        }
+        @media (max-width: 1150px) { .game-layout { grid-template-columns: 1fr; } }
+
+        .day-quest-box {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid var(--border);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+        .day-heading {
+            color: var(--ghibli-forest);
+            font-weight: 800;
+            font-size: 1.2rem;
+            border-bottom: 2px dashed var(--border);
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .quest-item {
+            display: flex;
+            align-items: flex-start;
+            background: rgba(0, 0, 0, 0.02);
+            padding: 14px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            border-left: 5px solid var(--ghibli-clay);
+            transition: background 0.2s;
+        }
+        .quest-item:hover { background: rgba(0, 0, 0, 0.04); }
+        .quest-item input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            margin-right: 14px;
+            margin-top: 2px;
+            accent-color: var(--ghibli-forest);
+            cursor: pointer;
+        }
+        .quest-text { flex: 1; outline: none; line-height: 1.6; font-size: 0.98rem; }
+
+        .tag { font-size: 0.75rem; padding: 3px 8px; border-radius: 6px; font-weight: bold; margin-right: 8px; text-transform: uppercase; color:#fff; display: inline-block; vertical-align: middle;}
+        .t-pa { background: #e74c3c; }
+        .t-voc { background: #e67e22; }
+        .t-gra { background: #3498db; }
+        .t-skill { background: #2ecc71; }
+
+        .panel-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            border: 2px solid var(--border);
+            margin-bottom: 22px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+        .note-area {
+            width: 100%; height: 80px; background: rgba(0, 0, 0, 0.02); border: 1px solid var(--border);
+            color: var(--text-main); border-radius: 8px; padding: 12px; box-sizing: border-box; font-family: inherit; margin-top: 8px; resize: none; outline: none; line-height: 1.5;
+        }
+        .note-area:focus { border-color: var(--ghibli-forest); background: rgba(255,255,255,0.5); }
+        
+        .btn {
+            background: var(--ghibli-forest); color: white; border: none; padding: 11px 15px;
+            border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; transition: all 0.2s; font-size: 0.95rem;
+        }
+        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-reset { background: #c0392b; }
+
+        .time-display-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            text-align: center;
+            margin-top: 12px;
+        }
+        .time-subbox { background: rgba(0, 0, 0, 0.03); padding: 10px 5px; border-radius: 8px; border: 1px solid var(--border); }
+        .time-subbox div { font-weight: bold; color: var(--ghibli-forest); font-size: 1.15rem; margin-top: 4px; }
+    </style>
+</head>
+<body>
+
+<div class="body-overlay">
+    <div class="container">
+        
+        <div class="welcome-banner">
+            <h1>🌳 IELTS GHIBLI STUDY OASIS 🌳</h1>
+            <p>"Thành công không phải là một đích đến cố định, mà là một hành trình bền bỉ nuôi dưỡng mầm cây kiên trì mỗi ngày."</p>
+        </div>
+
+        <div class="game-header">
+            <div class="player-status">
+                <div class="avatar">🌱</div>
+                <div>
+                    <div style="font-weight: 800; font-size: 1.35rem; color: var(--ghibli-cream);">Ghibli IELTS Scholar <span id="lbl-level">Lv.1</span></div>
+                    <div style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; opacity: 0.95;">
+                        <span>XP:</span>
+                        <div class="stat-bar"><div id="fill-xp" class="stat-fill" style="background: var(--ghibli-clay); width: 0%;"></div></div>
+                        <span id="txt-xp">0/1000</span>
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 30px; font-weight: bold; font-size: 1.2rem;">
+                <div>🌰 Hạt dẻ vàng: <span id="txt-gold">0</span></div>
+                <div>🔥 Chuỗi học: <span id="txt-streak">0</span> ngày</div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <button class="btn btn-reset" style="width: auto; padding: 8px 16px; margin:0;" onclick="resetWeeklyQuests()">🔄 Reset Tuần</button>
+                <button class="btn" style="width:auto; padding: 8px 16px; margin:0; background: var(--ghibli-clay);" onclick="toggleTheme()">🌓 Đổi Màu nền</button>
+            </div>
+        </div>
+
+        <div class="phase-grid">
+            <div class="phase-card active" id="p-1" onclick="selectPhase(1)">
+                <strong>GĐ 1: Nuôi dưỡng mầm gốc</strong><br><small>2-4-6: Phát âm + Từ vựng | 3-5-7: Phát âm + Ngữ pháp</small>
+            </div>
+            <div class="phase-card" id="p-2" onclick="selectPhase(2)">
+                <strong>GĐ 2: Trưởng thành kỹ năng</strong><br><small>Tìm hiểu chiến thuật 4 kỹ năng theo từng dạng bài chi tiết</small>
+            </div>
+            <div class="phase-card" id="p-3" onclick="selectPhase(3)">
+                <strong>GĐ 3: Vượt ngọn thác đề</strong><br><small>Thực hành luyện giải đề tách rời từng phần chuyên sâu</small>
+            </div>
+            <div class="phase-card" id="p-4" onclick="selectPhase(4)">
+                <strong>GĐ 4: Bay vào phòng thi</strong><br><small>Chiến thuật giải trọn vẹn Full Test áp lực thời gian thực</small>
+            </div>
+        </div>
+
+        <div class="game-layout">
+            
+            <div>
+                <div id="quest-board"></div>
+            </div>
+
+            <div>
+                <div class="panel-card" style="border: 2px solid var(--ghibli-clay); background: var(--ghibli-cream);">
+                    <h3 style="margin: 0 0 10px 0; font-size: 1.1rem; color: var(--ghibli-forest);">📊 Thống Kê Số Từ Vựng Tích Lũy</h3>
+                    <div class="time-display-grid">
+                        <div class="time-subbox" style="background:rgba(255,255,255,0.85);"><small>Hôm nay</small><div id="vocab-day-count" style="color:var(--gold);">0 từ</div></div>
+                        <div class="time-subbox" style="background:rgba(255,255,255,0.85);"><small>Tuần này</small><div id="vocab-week-count" style="color:var(--gold);">0 từ</div></div>
+                        <div class="time-subbox" style="background:rgba(255,255,255,0.85);"><small>Tháng này</small><div id="vocab-month-count" style="color:var(--gold);">0 từ</div></div>
+                    </div>
+                    <div style="margin-top:12px; font-size:0.8rem; color:var(--text-muted); line-height:1.45;">
+                        💡 <i>Hệ thống tự động phân tích số dòng chữ bạn chép từ vựng để hiển thị thời gian thực!</i>
+                    </div>
+                </div>
+
+                <div class="panel-card">
+                    <h3 style="margin: 0 0 10px 0; font-size: 1.1rem; color: var(--ghibli-forest);">🎵 Ghibli Radio - Nghe Nhạc</h3>
+                    <div style="font-size:0.82rem; margin-bottom:6px; color:var(--text-muted);">Dán Link Bài hát hoặc Playlist YouTube vào đây để đổi bài:</div>
+                    <div style="display:flex; gap:6px;">
+                        <input type="text" id="custom-music-url" style="flex:1; padding:7px; border-radius:6px; border:1px solid var(--border); background: rgba(255,255,255,0.8);" placeholder="Dán link bài hát YouTube...">
+                        <button class="btn" style="margin:0; padding:4px 12px; font-size:0.85rem; width: auto;" onclick="loadCustomMusic()">Đổi bài</button>
+                    </div>
+                    <div style="margin-top: 12px; position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; border: 2px solid var(--ghibli-clay);">
+                        <iframe id="music-frame" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" src="https://www.youtube.com/embed/videoseries?list=PLD23G97-t0UfA-C2bA7oAbaR-vH5v_bby" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    </div>
+                </div>
+
+                <div class="panel-card">
+                    <h3 style="margin: 0 0 10px 0; font-size: 1.1rem; color: var(--ghibli-forest);">⏱️ Đồng Hồ Tập Trung Pomodoro</h3>
+                    <div style="font-size: 1.9rem; font-weight: 800; text-align: center; margin: 12px 0; color: var(--ghibli-clay); letter-spacing: 1px;" id="stopwatch-display">00:00:00</div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn" style="background:#27ae60;" onclick="startTimer()">▶ Học bài</button>
+                        <button class="btn" style="background:#f39c12;" onclick="pauseTimer()">⏸ Tạm dừng</button>
+                        <button class="btn" style="background:#7f8c8d;" onclick="resetTimer()">⏱️ Lưu giờ</button>
+                    </div>
+                    <div class="time-display-grid">
+                        <div class="time-subbox"><small>Hôm nay</small><div id="t-day">0m</div></div>
+                        <div class="time-subbox"><small>Tuần này</small><div id="t-week">0m</div></div>
+                        <div class="time-subbox"><small>Trong năm</small><div id="t-year">0m</div></div>
+                    </div>
+                </div>
+
+                <div class="panel-card">
+                    <h3 style="margin: 0 0 10px 0; font-size: 1.1rem; color: var(--ghibli-forest);">📝 Kho Xuất Dữ Liệu Tổng Hợp</h3>
+                    <button class="btn" style="margin:0;" onclick="aggregateNotes()">📊 Gom Tất Cả Từ Vựng & Note</button>
+                    <textarea id="output-aggregation" class="note-area" style="height: 140px; margin-top: 10px;" placeholder="Bấm nút ở trên để tự động quét và gom toàn bộ từ vựng chép tay, ghi chú lỗi sai của tất cả các thứ trong tuần về đây ôn tập..."></textarea>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    let gameState = {
+        level: 1, xp: 0, gold: 0, streak: 0, currentPhase: 1,
+        customTasks: {}, dailyNotes: {}, dailyVocab: {},
+        timeToday: 0, timeWeek: 0, timeYear: 0
+    };
+
+    const baseQuests = {
+        1: [
+            { day: "THỨ HAI (Phát âm + Từ vựng)", tasks: [{t:"t-pa", txt:"Luyện phát âm: Tập trung chuẩn hóa các nguyên âm đơn dòng trên bảng IPA."}, {t:"t-voc", txt:"Từ vựng: Học 15 từ vựng căn bản chủ đề Giao tiếp hằng ngày."}] },
+            { day: "THỨ BA (Phát âm + Ngữ pháp)", tasks: [{t:"t-pa", txt:"Luyện phát âm: Thực hành cặp phụ âm vô thanh và hữu thanh cốt lõi."}, {t:"t-gra", txt:"Ngữ pháp: Học kỹ cấu trúc câu và dấu hiệu nhận biết thì Hiện tại đơn."}] },
+            { day: "THỨ TƯ (Phát âm + Từ vựng)", tasks: [{t:"t-pa", txt:"Luyện phát âm: Nhận diện và thực hành phát âm các nguyên âm đôi."}, {t:"t-voc", txt:"Từ vựng: Tích lũy 15 từ vựng cốt lõi về chủ đề Mối quan hệ gia đình."}] },
+            { day: "THỨ NĂM (Phát âm + Ngữ pháp)", tasks: [{t:"t-pa", txt:"Luyện phát âm: Thuộc lòng quy tắc bật âm đuôi Ending Sounds (/s/, /es/)."}, {t:"t-gra", txt:"Ngữ pháp: Học cách chuyển câu chủ động sang câu Bị Động (Passive Voice)."}] },
+            { day: "THỨ SÁU (Phát âm + Từ vựng)", tasks: [{t:"t-pa", txt:"Luyện phát âm: Học quy luật nhấn trọng âm của từ có 2 âm tiết."}, {t:"t-voc", txt:"Từ vựng: Ghi nhớ 15 từ học thuật chủ đề Môi trường tự nhiên."}] },
+            { day: "THỨ BẢY (Phát âm + Ngữ pháp)", tasks: [{t:"t-pa", txt:"Luyện phát âm: Thực hành kỹ thuật nối âm (Linking sounds) mượt mà."}, {t:"t-gra", txt:"Ngữ pháp: Tìm hiểu cấu trúc và cách dùng Mệnh đề quan hệ xác định."}] },
+            { day: "CHỦ NHẬT (Tổng ôn tập)", tasks: [{t:"t-voc", txt:"Tổng rà soát: Kiểm tra lại toàn bộ từ vựng và sửa chữa các lỗi sai phát âm."}] }
+        ],
+        2: [
+            { day: "THỨ HAI (Listening + Reading)", tasks: [{t:"t-skill", txt:"Listening: Học định dạng Part 1 bài thi và làm quen dạng điền thông tin biểu mẫu."}, {t:"t-skill", txt:"Reading: Học phương pháp Skimming đọc quét nhanh ý chính toàn bài đọc."}] },
+            { day: "THỨ BA (Speaking + Writing 1)", tasks: [{t:"t-skill", txt:"Speaking Part 1: Áp dụng công thức phản xạ kéo dài ý câu trả lời A.R.E.A."}, {t:"t-skill", txt:"Writing Task 1: Học bộ từ vựng diễn tả xu hướng tăng/giảm mạnh của số liệu."}] },
+            { day: "THỨ TƯ (Listening + Writing 2)", tasks: [{t:"t-skill", txt:"Listening: Luyện tập dạng bài trắc nghiệm lựa chọn Multiple Choice Section 2."}, {t:"t-skill", txt:"Writing Task 2: Học tư duy triển khai luận điểm mạch lạc theo một đường thẳng."}] },
+            { day: "THỨ NĂM (Speaking + Reading)", tasks: [{t:"t-skill", txt:"Speaking Part 2: Thực hành lập dàn ý nhanh bằng từ khóa trong vòng 1 phút."}, {t:"t-skill", txt:"Reading: Làm quen dạng bài True/False/Not Given và cách định vị từ khóa."}] },
+            { day: "THỨ SÁU (Listening + Writing 1)", tasks: [{t:"t-skill", txt:"Listening: Luyện dạng bài hoàn thành bản đồ sơ đồ không gian Labelling Maps."}, {t:"t-skill", txt:"Writing Task 1: Viết đoạn Mở bài và Tổng quan (Overview) cho biểu đồ cột."}] },
+            { day: "THỨ BẢY (Speaking + Writing 2)", tasks: [{t:"t-skill", txt:"Speaking Part 3: Học cách phát triển ý kiến bằng lập luận đa chiều sâu sắc."}, {t:"t-skill", txt:"Writing Task 2: Tập viết đoạn Thân bài chứng minh giải thích luận điểm bài viết."}] },
+            { day: "CHỦ NHẬT (Tổng kết)", tasks: [{t:"t-skill", txt:"Lập bảng từ khóa đồng nghĩa Keyword Table thu hoạch từ các bài đọc trong tuần."}] }
+        ],
+        3: [
+            { day: "THỨ HAI (Listening + Writing 1)", tasks: [{t:"t-skill", txt:"Listening: Thực hành giải đề Section 1 & 2 bộ đề Cambridge mới nhất."}, {t:"t-skill", txt:"Writing Task 1: Căn giờ hoàn chỉnh một bài Line Graph trong 20 phút."}] },
+            { day: "THỨ BA (Speaking + Writing 2)", tasks: [{t:"t-skill", txt:"Speaking Part 2: Bấm giờ nói liên tục từ 1.5 đến 2 phút trước máy ghi âm."}, {t:"t-skill", txt:"Writing Task 2: Viết bài Essay hoàn chỉnh chủ đề Education dung lượng 250 từ."}] },
+            { day: "THỨ TƯ (Reading)", tasks: [{t:"t-skill", txt:"Reading: Giải chi tiết trọn vẹn Passage 1 đề Cam và lọc bảng từ đồng nghĩa."}] },
+            { day: "THỨ NĂM (Speaking + Writing 1)", tasks: [{t:"t-skill", txt:"Speaking Part 1 & 3: Tự rà soát và khắc phục các lỗi phát âm qua file ghi âm."}, {t:"t-skill", txt:"Writing Task 1: Thực hành viết hoàn chỉnh đề thi biểu đồ dạng Bảng (Table)."}] },
+            { day: "THỨ SÁU (Listening + Writing 2)", tasks: [{t:"t-skill", txt:"Listening: Thử thách nghe Section 3 bài thảo luận học thuật hội thoại phức tạp."}, {t:"t-skill", txt:"Writing Task 2: Luyện viết bài Essay định dạng Discussion cả hai luồng ý kiến."}] },
+            { day: "THỨ BẢY (Reading)", tasks: [{t:"t-skill", txt:"Reading: Giải chi tiết Passage 2, cày sâu dạng bài Matching Headings nối tiêu đề."}] },
+            { day: "CHỦ NHẬT", tasks: [{t:"t-skill", txt:"Nghiên cứu lại toàn bộ danh sách các lỗi sai để ghi nhớ sâu bản chất cấu trúc."}] }
+        ],
+        4: [
+            { day: "THỨ HAI (Listening + Writing 1)", tasks: [{t:"t-skill", txt:"Full Test Listening: Nghe liên tục 4 Sections không ngừng nghỉ tập trung cao độ."}, {t:"t-skill", txt:"Writing Task 1: Phân tích giải quyết đề thi thật dạng Bản đồ (Map) hoặc Quy trình."}] },
+            { day: "THỨ BA (Speaking + Writing 2)", tasks: [{t:"t-skill", txt:"Full Test Speaking: Đối thoại trọn vẹn 3 phần mô phỏng quá trình thi thật sinh động."}, {t:"t-skill", txt:"Writing Task 2: Viết bài luận Essay hoàn chỉnh dưới áp lực phòng thi đúng 40 phút."}] },
+            { day: "THỨ TƯ (Reading)", tasks: [{t:"t-skill", txt:"Full Test Reading: Bật đồng hồ đếm ngược áp lực đúng 60 phút giải trọn vẹn 3 bài đọc."}] },
+            { day: "THỨ NĂM (Speaking + Writing 1)", tasks: [{t:"t-skill", txt:"Full Test Speaking: Tập trung đẩy mạnh độ trôi chảy Fluency phản xạ từ vựng tự nhiên."}, {t:"t-skill", txt:"Writing Task 1: Thực hành giải đề viết dạng biểu đồ kết hợp Mixed Charts."}] },
+            { day: "THỨ SÁU (Listening + Writing 2)", tasks: [{t:"t-skill", txt:"Full Test Listening: Tập bắt nhịp với tốc độ cao bài nghe và các accent giọng lạ."}, {t:"t-skill", txt:"Writing Task 2: Kiểm tra cấu trúc câu phức hợp Coherence liên kết đoạn bài luận."}] },
+            { day: "THỨ BẢY (Reading)", tasks: [{t:"t-skill", txt:"Full Test Reading: Thực hiện chiến thuật căn thời gian nâng cao tối ưu hóa điểm số."}] },
+            { day: "CHỦ NHẬT", tasks: [{t:"t-skill", txt:"Tổng rà soát toàn diện hệ thống từ vựng nâng cấp Band và nghỉ ngơi phục hồi cơ thể."}] }
+        ]
+    };
+
+    function selectPhase(pNum) {
+        gameState.currentPhase = pNum;
+        document.querySelectorAll('.phase-card').forEach(c => c.classList.remove('active'));
+        document.getElementById(`p-${pNum}`).classList.add('active');
+        renderQuests();
+    }
+
+    function renderQuests() {
+        const board = document.getElementById('quest-board');
+        board.innerHTML = '';
+        const p = gameState.currentPhase;
+
+        baseQuests[p].forEach((d, dIdx) => {
+            let box = document.createElement('div');
+            box.className = 'day-quest-box';
+
+            let heading = document.createElement('div');
+            heading.className = 'day-heading';
+            heading.innerHTML = `<span>🏡 ${d.day}</span>`;
+            box.appendChild(heading);
+
+            d.tasks.forEach((t, tIdx) => {
+                let qId = `g-${p}-${dIdx}-${tIdx}`;
+                let row = document.createElement('div');
+                row.className = 'quest-item';
+
+                let textContent = (gameState.customTasks[qId] !== undefined) ? gameState.customTasks[qId] : t.txt;
+                let badgeLabel = t.t === "t-pa" ? "Phát âm" : t.t === "t-voc" ? "Từ vựng" : t.t === "t-gra" ? "Ngữ pháp" : "IELTS";
+
+                row.innerHTML = `
+                    <input type="checkbox" id="${qId}" onchange="completeQuest('${qId}')">
+                    <div class="quest-text" contenteditable="true" id="txt-${qId}" onblur="saveCustomTask('${qId}')">
+                        <span class="tag ${t.t}">${badgeLabel}</span>${textContent}
+                    </div>
+                `;
+                box.appendChild(row);
+            });
+
+            let vocabKey = `vocab-${p}-${dIdx}`;
+            let currentVocabVal = gameState.dailyVocab[vocabKey] || '';
+            let noteKey = `note-${p}-${dIdx}`;
+            let currentNoteVal = gameState.dailyNotes[noteKey] || '';
+
+            let vocabDiv = document.createElement('div');
+            vocabDiv.style.display = "grid";
+            vocabDiv.style.gridTemplateColumns = "1fr 1fr";
+            vocabDiv.style.gap = "12px";
+            vocabDiv.style.marginTop = "12px";
+            vocabDiv.innerHTML = `
+                <div>
+                    <label style="font-size:0.75rem; color:var(--ghibli-forest); font-weight:bold;">📔 Từ vựng học hôm nay (Mỗi dòng 1 từ):</label>
+                    <textarea id="${vocabKey}" class="note-area" style="height:90px;" placeholder="Ví dụ:\nEnvironment - Môi trường\nAcademic - Học thuật" oninput="saveDailyVocab('${vocabKey}')">${currentVocabVal}</textarea>
+                </div>
+                <div>
+                    <label style="font-size:0.75rem; color:var(--text-muted); font-weight:bold;">✍️ Ghi chú nhanh lỗi sai/Kinh nghiệm:</label>
+                    <textarea id="${noteKey}" class="note-area" style="height:90px;" placeholder="Ghi chú cấu trúc ngữ pháp, bẫy nghe cần tránh..." oninput="saveDailyNote('${noteKey}')">${currentNoteVal}</textarea>
+                </div>
+            `;
+            box.appendChild(vocabDiv);
+
+            board.appendChild(box);
+        });
+        syncCheckboxes();
+        countVocabTotal();
+    }
+
+    function saveCustomTask(qId) {
+        let el = document.getElementById(`txt-${qId}`);
+        if(el) {
+            let cleanText = el.innerHTML.replace(/<span[^>]*>.*?<\/span>/i, '').trim();
+            gameState.customTasks[qId] = cleanText;
+            saveToStorage();
+        }
+    }
+
+    function saveDailyNote(noteKey) {
+        gameState.dailyNotes[noteKey] = document.getElementById(noteKey).value;
+        saveToStorage();
+    }
+
+    function saveDailyVocab(vocabKey) {
+        gameState.dailyVocab[vocabKey] = document.getElementById(vocabKey).value;
+        saveToStorage();
+        countVocabTotal();
+    }
+
+    function countVocabTotal() {
+        let totalWords = 0;
+        for (let k in gameState.dailyVocab) {
+            let text = gameState.dailyVocab[k].trim();
+            if (text) {
+                let lines = text.split('\n').filter(line => line.trim() !== '');
+                totalWords += lines.length;
+            }
+        }
+        document.getElementById('vocab-day-count').innerText = `${totalWords} từ`;
+        document.getElementById('vocab-week-count').innerText = `${totalWords} từ`;
+        document.getElementById('vocab-month-count').innerText = `${totalWords} từ`;
+    }
+
+    function completeQuest(qId) {
+        let cb = document.getElementById(qId);
+        if(cb && cb.checked) {
+            gameState.xp += 100; gameState.gold += 50;
+            if(gameState.xp >= 1000) {
+                gameState.level += 1; gameState.xp -= 1000;
+                alert(`🌱 CÂY SINH MỆNH LÊN CẤP! Bạn đạt Level ${gameState.level}!`);
+            }
+            if(Math.random() > 0.65) gameState.streak += 1;
+            saveToStorage(); updateDashboard();
+        }
+    }
+
+    function aggregateNotes() {
+        let out = `======= KHO TỪ VỰNG TỔNG HỢP =======\n`;
+        for (let k in gameState.dailyVocab) {
+            if(gameState.dailyVocab[k].trim() !== '') {
+                out += `${gameState.dailyVocab[k].trim()}\n`;
+            }
+        }
+        out += `\n======= NHẬT KÝ GHI CHÚ LỖI SAI =======\n`;
+        for (let k in gameState.dailyNotes) {
+            if(gameState.dailyNotes[k].trim() !== '') {
+                out += `• ${gameState.dailyNotes[k].trim()}\n`;
+            }
+        }
+        document.getElementById('output-aggregation').value = out;
+    }
+
+    function loadCustomMusic() {
+        let url = document.getElementById('custom-music-url').value.trim();
+        if(url) {
+            let videoId = ""; let playlistId = "";
+            if (url.includes("list=")) {
+                playlistId = url.split("list=")[1].split("&")[0];
+                document.getElementById('music-frame').src = `https://www.youtube.com/embed/videoseries?list=${playlistId}`;
+                alert("🎵 Đã đổi sang Playlist YouTube thành công!");
+            } else if (url.includes("v=")) {
+                videoId = url.split("v=")[1].split("&")[0];
+                document.getElementById('music-frame').src = `https://www.youtube.com/embed/${videoId}`;
+                alert("🎵 Đã đổi bài hát YouTube thành công!");
+            } else if (url.includes("youtu.be/")) {
+                videoId = url.split("youtu.be/")[1].split("?")[0];
+                document.getElementById('music-frame').src = `https://www.youtube.com/embed/${videoId}`;
+                alert("🎵 Đã đổi bài hát YouTube thành công!");
+            } else {
+                alert("❌ Vui lòng dán chính xác định dạng link video hoặc link playlist từ trình duyệt của YouTube.");
+            }
+        }
+    }
+
+    function resetWeeklyQuests() {
+        if(confirm("Bạn có chắc chắn muốn xóa tất cả trạng thái hoàn thành (dấu tích) của tuần này không?")) {
+            baseQuests[gameState.currentPhase].forEach((d, dIdx) => {
+                d.tasks.forEach((t, tIdx) => {
+                    let qId = `g-${gameState.currentPhase}-${dIdx}-${tIdx}`;
+                    localStorage.removeItem(qId);
+                    let cb = document.getElementById(qId);
+                    if(cb) cb.checked = false;
+                });
+            });
+            alert("🔄 Đã làm mới trạng thái các hộp kiểm hoàn thành!");
+        }
+    }
+
+    let timerInterval = null; let secondsElapsed = 0;
+    function startTimer() {
+        if(timerInterval) return;
+        timerInterval = setInterval(() => {
+            secondsElapsed++;
+            let hrs = Math.floor(secondsElapsed / 3600);
+            let mins = Math.floor((secondsElapsed % 3600) / 60);
+            let secs = secondsElapsed % 60;
+            document.getElementById('stopwatch-display').innerText = `${hrs.toString().padStart(2,'0')}:${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+        }, 1000);
+    }
+    function pauseTimer() { clearInterval(timerInterval); timerInterval = null; }
+    function resetTimer() {
+        clearInterval(timerInterval); timerInterval = null;
+        let minsAdded = Math.round(secondsElapsed / 60);
+        if(minsAdded < 1 && secondsElapsed > 0) minsAdded = 1;
+        gameState.timeToday += minsAdded; gameState.timeWeek += minsAdded; gameState.timeYear += minsAdded;
+        secondsElapsed = 0; document.getElementById('stopwatch-display').innerText = "00:00:00";
+        saveToStorage(); updateTimeDisplay();
+        alert(`⏱️ Đã cộng dồn thành công ${minsAdded} phút tập trung học bài vào kho lưu trữ!`);
+    }
+    function updateTimeDisplay() {
+        document.getElementById('t-day').innerText = `${gameState.timeToday}m`;
+        document.getElementById('t-week').innerText = `${gameState.timeWeek}m`;
+        document.getElementById('t-year').innerText = `${gameState.timeYear}m`;
+    }
+
+    function toggleTheme() {
+        let curr = document.documentElement.getAttribute('data-theme');
+        document.documentElement.setAttribute('data-theme', curr === 'dark' ? 'light' : 'dark');
+        localStorage.setItem('ghibli_theme_ult_v2', curr === 'dark' ? 'light' : 'dark');
+    }
+
+    function updateDashboard() {
+        document.getElementById('lbl-level').innerText = `Lv.${gameState.level}`;
+        document.getElementById('txt-gold').innerText = gameState.gold;
+        document.getElementById('txt-streak').innerText = gameState.streak;
+        document.getElementById('txt-xp').innerText = `${gameState.xp}/1000`;
+        document.getElementById('fill-xp').style.width = `${(gameState.xp / 1000) * 100}%`;
+    }
+
+    function saveToStorage() { localStorage.setItem('ghibli_ielts_state_ult_v2', JSON.stringify(gameState)); }
+    
+    function syncCheckboxes() {
+        document.querySelectorAll('.quest-item input').forEach(cb => {
+            cb.checked = localStorage.getItem(cb.id) === 'true';
+            cb.addEventListener('change', (e) => { localStorage.setItem(e.target.id, e.target.checked); });
+        });
+    }
+
+    window.onload = function() {
+        let saved = localStorage.getItem('ghibli_ielts_state_ult_v2');
+        if(saved) {
+            gameState = JSON.parse(saved);
+            if(!gameState.customTasks) gameState.customTasks = {};
+            if(!gameState.dailyNotes) gameState.dailyNotes = {};
+            if(!gameState.dailyVocab) gameState.dailyVocab = {};
+        }
+        if(localStorage.getItem('ghibli_theme_ult_v2') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+        updateDashboard(); updateTimeDisplay(); selectPhase(gameState.currentPhase);
+    }
+</script>
+</body>
+</html>
